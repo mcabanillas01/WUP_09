@@ -42,23 +42,112 @@ We are using numerical~numerical because the variables we are looking at are all
 ### Graphical Descriptive Results
 
 ```{r}
-Fishies=filter(Fishdata, Species == "Perch")
-Fishies = select(Fishies,-Species)
+FishiesP=filter(Fishdata, Species == "Perch")
+Fishies = select(FishiesP,-Species)
 pairs(Fishies)
 ```
 
+```{r}
+FishiesB=filter(Fishdata, Species == "Bream")
+Fishies = select(FishiesB,-Species)
+pairs(Fishies)
+```
+
+```{r}
+FishiesS=filter(Fishdata, Species == "Smelt")
+Fishies = select(FishiesS,-Species)
+pairs(Fishies)
+```
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
+
+
 ### Numerical Descriptive Results
+
+```{r}
+summary(FishiesP)
+summary(FishiesB)
+summary(FishiesS)
+```
+
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
+```{r}
+Perchmodel=lm(Weight~Length2+Width,data=Fishies)
+summary(Perchmodel)
+```
+```{r}
+library(leaps)
+regsubsets.out <-
+    regsubsets(Weight ~ .,
+               data = Fishies,
+               nbest = 1,       # 1 best model for each number of predictors
+               nvmax = NULL,    # NULL for no limit on number of variables
+               force.in = NULL, force.out = NULL,
+               method = "exhaustive")
+
+summary.out <- summary(regsubsets.out)
+as.data.frame(summary.out$outmat)
+library(car)
+subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2")
+```
+
+
+```{r}
+Breammodel=lm(Weight~Length2+Width,data=Fishies)
+summary(Breammodel)
+```
+```{r}
+library(leaps)
+regsubsets.out <-
+    regsubsets(Weight ~ .,
+               data = Fishies,
+               nbest = 1,       # 1 best model for each number of predictors
+               nvmax = NULL,    # NULL for no limit on number of variables
+               force.in = NULL, force.out = NULL,
+               method = "exhaustive")
+
+summary.out <- summary(regsubsets.out)
+as.data.frame(summary.out$outmat)
+library(car)
+subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2")
+```
+
+```{r}
+Smeltmodel=lm(Weight~Length2+Width,data=Fishies)
+summary(Smeltmodel)
+```
+```{r}
+library(leaps)
+regsubsets.out <-
+    regsubsets(Weight ~ .,
+               data = Fishies,
+               nbest = 1,       # 1 best model for each number of predictors
+               nvmax = NULL,    # NULL for no limit on number of variables
+               force.in = NULL, force.out = NULL,
+               method = "exhaustive")
+
+summary.out <- summary(regsubsets.out)
+as.data.frame(summary.out$outmat)
+library(car)
+subsets(regsubsets.out,statistic="adjr2",legend="bottomright",main="Adjusted R^2")
+```
 ## Inferential Results
 
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+
+$H_0$ The null hypothesis is that there would be no difference in the way the fishies were measured.
+$H_A$ The alternative hypothesis determined that there is a difference in the way the fishies weight was determined.
 
 
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+
+We used three models to predict the weight of these fish for the Perch the best explanatory variables were height and width.
+
+We used three models to predict the weight of these fish for the Bream the best explanatory variables were length1,height and width.
+
+We used three models to predict the weight of these fish for the Smelt the best explanatory variables were length1, length2, height and width.
